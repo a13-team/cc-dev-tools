@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/notify.sh CC_TELEGRAM_STOP_MSG 'Claude Code response completed at $(date \"+%Y-%m-%d %H:%M:%S\")'",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/notify.sh CC_TELEGRAM_STOP_MSG 'Claude Code response completed'",
             "timeout": 10,
             "allowedEnvVars": ["CC_TELEGRAM_BOT_TOKEN", "CC_TELEGRAM_CHAT_ID", "CC_TELEGRAM_DRY_RUN", "CC_TELEGRAM_STOP_MSG"]
           }
@@ -19,7 +19,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/notify.sh CC_TELEGRAM_SUBAGENT_MSG 'Claude Code subagent completed at $(date \"+%Y-%m-%d %H:%M:%S\")'",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/notify.sh CC_TELEGRAM_SUBAGENT_MSG 'Claude Code subagent completed'",
             "timeout": 10,
             "allowedEnvVars": ["CC_TELEGRAM_BOT_TOKEN", "CC_TELEGRAM_CHAT_ID", "CC_TELEGRAM_DRY_RUN", "CC_TELEGRAM_SUBAGENT_MSG"]
           }

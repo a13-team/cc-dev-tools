@@ -6,13 +6,14 @@ MSG_VAR="$1"
 DEFAULT_MSG="$2"
 
 TAG="[$(hostname -s):${CLAUDE_PROJECT_DIR##*/}]"
+TIMESTAMP="$(date '+%Y-%m-%d %H:%M:%S')"
 
 if [[ -z "$CC_TELEGRAM_BOT_TOKEN" || -z "$CC_TELEGRAM_CHAT_ID" ]]; then
   echo "Telegram notification skipped: Set CC_TELEGRAM_BOT_TOKEN and CC_TELEGRAM_CHAT_ID"
   exit 0
 fi
 
-MESSAGE="$TAG ${!MSG_VAR:-$DEFAULT_MSG}"
+MESSAGE="$TAG ${!MSG_VAR:-$DEFAULT_MSG} at $TIMESTAMP"
 
 if [[ "${CC_TELEGRAM_DRY_RUN:-false}" == "true" ]]; then
   echo "[DRY RUN] $MESSAGE"
