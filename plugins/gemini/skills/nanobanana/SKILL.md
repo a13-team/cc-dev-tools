@@ -40,7 +40,7 @@ gemini -e nanobanana -p '/command "description" --flags'
 
 ## Supported Models
 
-Set via `NANOBANANA_MODEL` environment variable:
+Pass via inline env var in the command:
 
 | Model | Description |
 |-------|-------------|
@@ -49,8 +49,14 @@ Set via `NANOBANANA_MODEL` environment variable:
 | `gemini-2.5-flash-image` | v1, legacy |
 
 ```bash
-# Override model for a single invocation
+# Default model (no override needed)
+gemini -e nanobanana -p '/generate "prompt"'
+
+# Use pro model for higher quality
 NANOBANANA_MODEL=gemini-3-pro-image-preview gemini -e nanobanana -p '/generate "prompt"'
+
+# Use legacy v1 model
+NANOBANANA_MODEL=gemini-2.5-flash-image gemini -e nanobanana -p '/generate "prompt"'
 ```
 
 ---
@@ -61,25 +67,27 @@ NANOBANANA_MODEL=gemini-3-pro-image-preview gemini -e nanobanana -p '/generate "
 
 Create single or multiple images from text descriptions.
 
-```bash
-# Basic
-gemini -e nanobanana -p '/generate "a sunset over mountains"'
+**Skill default: `--count=3`** — always use `--count=3` unless the user specifies a different number.
 
-# Multiple with styles
+```bash
+# Basic (default 3 images)
+gemini -e nanobanana -p '/generate "a sunset over mountains" --count=3'
+
+# With styles (3 images, one per style)
 gemini -e nanobanana -p '/generate "mountain landscape" --count=3 --styles="watercolor,oil-painting,sketch"'
 
-# With variations and preview
-gemini -e nanobanana -p '/generate "portrait of a cat" --count=4 --variations="lighting,angle" --preview'
+# User requested specific count
+gemini -e nanobanana -p '/generate "portrait of a cat" --count=5 --variations="lighting,angle" --preview'
 
 # Reproducible with seed
-gemini -e nanobanana -p '/generate "abstract art" --seed=42 --count=2'
+gemini -e nanobanana -p '/generate "abstract art" --seed=42 --count=3'
 ```
 
 **Flags:**
 
 | Flag | Values | Description |
 |------|--------|-------------|
-| `--count` | 1-8 (default: 1) | Number of images |
+| `--count` | 1-8 (skill default: **3**) | Number of images |
 | `--styles` | comma-separated | Artistic styles |
 | `--variations` | comma-separated | Variation types |
 | `--format` | `grid`, `separate` | Output layout |
