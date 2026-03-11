@@ -1,6 +1,6 @@
 ---
 name: nanobanana
-version: 1.0.0
+version: 1.1.0
 description: This skill should be used when the user wants to generate, edit, or manipulate images using Google's Nano Banana models via Gemini CLI. Trigger phrases include "generate image", "create image", "edit image", "restore photo", "make icon", "create pattern", "draw diagram", "visual story", "nanobanana", "image generation", "text to image", or when users request any image creation, editing, or visual content generation tasks. Inherits Gemini CLI conventions for headless execution.
 ---
 
@@ -10,14 +10,30 @@ This skill extends the Gemini plugin with image generation, editing, and manipul
 
 ---
 
-## Prerequisites
+## IMPORTANT: Run Health Check First
 
-1. **Gemini CLI** installed and configured (see parent `gemini` skill)
-2. **Nanobanana extension** installed:
-   ```bash
-   gemini extensions install https://github.com/gemini-cli-extensions/nanobanana
-   ```
-3. **API Key**: Set `NANOBANANA_API_KEY` environment variable (get from [Google AI Studio](https://aistudio.google.com/apikey))
+**Before executing any nanobanana command, run the health check below.** If any check fails, guide the user through the fix before proceeding.
+
+```bash
+# 1. Check Gemini CLI installed
+command -v gemini && echo "OK: gemini found" || echo "FAIL: gemini not found"
+
+# 2. Check nanobanana extension installed
+gemini extensions list 2>/dev/null | grep -qi nanobanana && echo "OK: nanobanana installed" || echo "FAIL: nanobanana not installed"
+
+# 3. Check API key set
+[ -n "$NANOBANANA_API_KEY" ] && echo "OK: API key set" || echo "FAIL: NANOBANANA_API_KEY not set"
+```
+
+Run all three checks in a single bash call. Then evaluate:
+
+| Check | If FAIL | Guide |
+|-------|---------|-------|
+| Gemini CLI not found | Install it | `npm install -g @google/gemini-cli` |
+| Nanobanana not installed | Install extension | `gemini extensions install https://github.com/gemini-cli-extensions/nanobanana` |
+| API key not set | Set env var | Get key from [Google AI Studio](https://aistudio.google.com/apikey), then `export NANOBANANA_API_KEY=your_key` |
+
+**If all checks pass**, proceed with the command. **If any check fails**, stop and tell the user exactly what to fix with the command to run. Do not attempt to execute nanobanana commands until all checks pass.
 
 ---
 
