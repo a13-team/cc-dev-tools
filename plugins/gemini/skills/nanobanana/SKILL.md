@@ -1,6 +1,6 @@
 ---
 name: nanobanana
-version: 1.1.0
+version: 1.2.0
 description: This skill should be used when the user wants to generate, edit, or manipulate images using Google's Nano Banana models via Gemini CLI. Trigger phrases include "generate image", "create image", "edit image", "restore photo", "make icon", "create pattern", "draw diagram", "visual story", "nanobanana", "image generation", "text to image", or when users request any image creation, editing, or visual content generation tasks. Inherits Gemini CLI conventions for headless execution.
 ---
 
@@ -21,19 +21,49 @@ command -v gemini && echo "OK: gemini found" || echo "FAIL: gemini not found"
 # 2. Check nanobanana extension installed
 gemini extensions list 2>/dev/null | grep -qi nanobanana && echo "OK: nanobanana installed" || echo "FAIL: nanobanana not installed"
 
-# 3. Check API key set
-[ -n "$NANOBANANA_API_KEY" ] && echo "OK: API key set" || echo "FAIL: NANOBANANA_API_KEY not set"
+# 3. Check authentication (API key OR Vertex AI)
+AUTH="${NANOBANANA_AUTH_METHOD:-api_key}"
+if [ "$AUTH" = "vertex_ai" ]; then
+  [ -n "$GCP_PROJECT_ID" ] && [ -n "$GCP_REGION" ] && echo "OK: Vertex AI auth ($GCP_PROJECT_ID / $GCP_REGION)" || echo "FAIL: Vertex AI requires GCP_PROJECT_ID and GCP_REGION"
+elif [ "$AUTH" = "auto" ]; then
+  [ -n "$NANOBANANA_API_KEY" ] || [ -n "$GCP_PROJECT_ID" ] && echo "OK: auth auto ($AUTH)" || echo "FAIL: Set NANOBANANA_API_KEY or GCP_PROJECT_ID+GCP_REGION"
+else
+  [ -n "$NANOBANANA_API_KEY" ] && echo "OK: API key set" || echo "FAIL: NANOBANANA_API_KEY not set"
+fi
+echo "AUTH_METHOD=$AUTH"
 ```
 
-Run all three checks in a single bash call. Then evaluate:
+Run all checks in a single bash call. Then evaluate:
 
 | Check | If FAIL | Guide |
 |-------|---------|-------|
 | Gemini CLI not found | Install it | `npm install -g @google/gemini-cli` |
 | Nanobanana not installed | Install extension | `gemini extensions install https://github.com/gemini-cli-extensions/nanobanana` |
 | API key not set | Set env var | Get key from [Google AI Studio](https://aistudio.google.com/apikey), then `export NANOBANANA_API_KEY=your_key` |
+| Vertex AI missing vars | Set GCP env vars | `export NANOBANANA_AUTH_METHOD=vertex_ai GCP_PROJECT_ID=your-project GCP_REGION=us-central1` |
 
 **If all checks pass**, proceed with the command. **If any check fails**, stop and tell the user exactly what to fix with the command to run. Do not attempt to execute nanobanana commands until all checks pass.
+
+---
+
+## Authentication Methods
+
+Nanobanana supports three auth methods via `NANOBANANA_AUTH_METHOD`:
+
+| Method | Env Vars Required | Best For |
+|--------|-------------------|----------|
+| `api_key` (default) | `NANOBANANA_API_KEY` | Local dev, simple setups |
+| `vertex_ai` | `GCP_PROJECT_ID`, `GCP_REGION` + ADC | Production on GCP (Cloud Run, GKE, GCE) |
+| `auto` | Tries API key first, falls back to Vertex AI | Flexible environments |
+
+**Vertex AI setup** (add to `.zshrc`):
+```bash
+export NANOBANANA_AUTH_METHOD=vertex_ai
+export GCP_PROJECT_ID=your-project-id
+export GCP_REGION=us-central1
+```
+
+**IAM requirement**: Grant `roles/aiplatform.user` to the service account or user running the CLI.
 
 ---
 
@@ -284,7 +314,9 @@ Always run in the user's project directory. Output files are saved to the curren
 | Error | Cause | Fix |
 |-------|-------|-----|
 | Extension not found | Not installed | `gemini extensions install https://github.com/gemini-cli-extensions/nanobanana` |
-| API key missing | `NANOBANANA_API_KEY` not set | Set env var with Google AI Studio key |
+| API key missing | `NANOBANANA_API_KEY` not set | Set env var or switch to `vertex_ai` auth |
+| Vertex AI auth failed | Missing `GCP_PROJECT_ID` / `GCP_REGION` or no ADC | Run `gcloud auth application-default login` and set env vars |
+| IAM permission denied | Missing `roles/aiplatform.user` | Grant IAM role to service account |
 | Model unavailable | Invalid model ID | Check `NANOBANANA_MODEL` value |
 | Generation failed | Prompt safety filter | Rephrase the prompt |
 
