@@ -28,8 +28,8 @@ Do NOT attempt to generate images through any other method.
 # 1. Check Gemini CLI installed
 command -v gemini && echo "OK: gemini found" || echo "FAIL: gemini not found"
 
-# 2. Check nanobanana extension installed
-ls ~/.gemini/extensions/ 2>/dev/null | grep -qi nanobanana && echo "OK: nanobanana installed" || echo "FAIL: nanobanana not installed"
+# 2. Check nanobanana extension installed with valid config
+ls ~/.gemini/extensions/nanobanana/gemini-extension.json >/dev/null 2>&1 && echo "OK: nanobanana installed" || echo "FAIL: nanobanana not installed or config missing"
 
 # 3. Check authentication (API key OR Vertex AI)
 AUTH="${NANOBANANA_AUTH_METHOD:-api_key}"
@@ -46,9 +46,10 @@ echo "AUTH_METHOD=$AUTH"
 | Check | If FAIL | Fix |
 |-------|---------|-----|
 | Gemini CLI not found | Install it | `npm install -g @google/gemini-cli` |
-| Nanobanana not installed | Install extension | `gemini extensions install https://github.com/gemini-cli-extensions/nanobanana` |
+| Nanobanana not installed or config missing | Reinstall extension | `rm -rf ~/.gemini/extensions/nanobanana && gemini extensions install https://github.com/gemini-cli-extensions/nanobanana` (interactive — run in terminal) |
 | API key not set | Set env var | Get key from [Google AI Studio](https://aistudio.google.com/apikey), then `export GEMINI_API_KEY=your_key` |
 | Vertex AI missing vars | Set GCP env vars | `export NANOBANANA_AUTH_METHOD=vertex_ai GCP_PROJECT_ID=your-project GCP_REGION=us-central1` |
+| Generative Language API disabled | Enable in GCP console | Visit `https://console.developers.google.com/apis/api/generativelanguage.googleapis.com` and enable for your project |
 
 **If any check fails**, stop and guide the user. Do not run nanobanana commands until all checks pass.
 
@@ -75,11 +76,13 @@ export GCP_REGION=us-central1
 
 ## Command Pattern
 
-**Always use `--yolo` flag** to auto-approve all tool actions (prevents hanging in non-interactive mode):
+**Always use `--yolo -p` flags** for headless execution (auto-approve + non-interactive mode):
 
 ```bash
-gemini --yolo "/command 'description' --flags"
+gemini --yolo -p "/command 'description' --flags"
 ```
+
+**Why both flags?** `--yolo` auto-approves tool actions. `-p` forces non-interactive (headless) mode. Both are required in Claude Code's non-terminal environment.
 
 **Skill default: `--count=3`** — always generate 3 images unless user specifies otherwise.
 
@@ -106,16 +109,16 @@ gemini --yolo "/command 'description' --flags"
 
 ```bash
 # Default (3 images)
-gemini --yolo "/generate 'a sunset over mountains' --count=3"
+gemini --yolo -p "/generate 'a sunset over mountains' --count=3"
 
 # With styles
-gemini --yolo "/generate 'mountain landscape' --count=3 --styles='watercolor,oil-painting,sketch'"
+gemini --yolo -p "/generate 'mountain landscape' --count=3 --styles='watercolor,oil-painting,sketch'"
 
 # With preview
-gemini --yolo "/generate 'portrait of a cat' --count=3 --preview"
+gemini --yolo -p "/generate 'portrait of a cat' --count=3 --preview"
 
 # Reproducible
-gemini --yolo "/generate 'abstract art' --seed=42 --count=3"
+gemini --yolo -p "/generate 'abstract art' --seed=42 --count=3"
 ```
 
 **Flags:**
@@ -136,19 +139,19 @@ gemini --yolo "/generate 'abstract art' --seed=42 --count=3"
 ### `/edit` - Image Modification
 
 ```bash
-gemini --yolo "/edit path/to/image.jpg 'change background to beach scene' --preview"
+gemini --yolo -p "/edit path/to/image.jpg 'change background to beach scene' --preview"
 ```
 
 ### `/restore` - Photo Enhancement
 
 ```bash
-gemini --yolo "/restore old_photo.jpg 'remove scratches and enhance colors' --preview"
+gemini --yolo -p "/restore old_photo.jpg 'remove scratches and enhance colors' --preview"
 ```
 
 ### `/icon` - Icon Generation
 
 ```bash
-gemini --yolo "/icon 'coffee cup logo' --sizes='64,128,256,512' --type='app-icon' --corners='rounded' --preview"
+gemini --yolo -p "/icon 'coffee cup logo' --sizes='64,128,256,512' --type='app-icon' --corners='rounded' --preview"
 ```
 
 | Flag | Values |
@@ -162,7 +165,7 @@ gemini --yolo "/icon 'coffee cup logo' --sizes='64,128,256,512' --type='app-icon
 ### `/pattern` - Seamless Patterns
 
 ```bash
-gemini --yolo "/pattern 'geometric triangles' --type='seamless' --style='geometric' --preview"
+gemini --yolo -p "/pattern 'geometric triangles' --type='seamless' --style='geometric' --preview"
 ```
 
 | Flag | Values |
@@ -175,7 +178,7 @@ gemini --yolo "/pattern 'geometric triangles' --type='seamless' --style='geometr
 ### `/story` - Sequential Visual Narratives
 
 ```bash
-gemini --yolo "/story 'seed growing into tree' --steps=4 --type='process' --preview"
+gemini --yolo -p "/story 'seed growing into tree' --steps=4 --type='process' --preview"
 ```
 
 | Flag | Values |
@@ -188,7 +191,7 @@ gemini --yolo "/story 'seed growing into tree' --steps=4 --type='process' --prev
 ### `/diagram` - Technical Diagrams
 
 ```bash
-gemini --yolo "/diagram 'microservices architecture' --type='architecture' --complexity='detailed'"
+gemini --yolo -p "/diagram 'microservices architecture' --type='architecture' --complexity='detailed'"
 ```
 
 | Flag | Values |
@@ -200,7 +203,7 @@ gemini --yolo "/diagram 'microservices architecture' --type='architecture' --com
 ### `/nanobanana` - Natural Language Interface
 
 ```bash
-gemini --yolo "/nanobanana create a logo for my tech startup"
+gemini --yolo -p "/nanobanana create a logo for my tech startup"
 ```
 
 Use when the request doesn't map cleanly to a specific command.
@@ -231,7 +234,7 @@ Default: `gemini-3.1-flash-image-preview` (fast, good quality)
 
 Override inline:
 ```bash
-NANOBANANA_MODEL=gemini-3-pro-image-preview gemini --yolo "/generate 'prompt' --count=3"
+NANOBANANA_MODEL=gemini-3-pro-image-preview gemini --yolo -p "/generate 'prompt' --count=3"
 ```
 
 ---
@@ -254,7 +257,7 @@ After generation completes:
 When the user asks for changes:
 - **"Try again" / "Give me options"**: Regenerate with `--count=3`
 - **"Make it more [adjective]"**: Adjust prompt and regenerate
-- **"Edit this one"**: Use `gemini --yolo "/edit nanobanana-output/filename.png 'adjustment'"`
+- **"Edit this one"**: Use `gemini --yolo -p "/edit nanobanana-output/filename.png 'adjustment'"`
 - **"Different style"**: Add `--styles="requested_style"` to the command
 
 ## Prompt Tips
@@ -270,6 +273,8 @@ When the user asks for changes:
 
 | Error | Cause | Fix |
 |-------|-------|-----|
+| `Skipping extension: An unknown error` | Missing config file | Reinstall: `rm -rf ~/.gemini/extensions/nanobanana && gemini extensions install https://github.com/gemini-cli-extensions/nanobanana` |
+| `Generative Language API is disabled` | API not enabled in GCP | Enable at `console.developers.google.com/apis/api/generativelanguage.googleapis.com` |
 | Extension not found | Not installed | `gemini extensions install https://github.com/gemini-cli-extensions/nanobanana` |
 | API key missing | No auth configured | Set `GEMINI_API_KEY` or switch to `vertex_ai` auth |
 | Vertex AI auth failed | Missing GCP vars or no ADC | Run `gcloud auth application-default login` and set env vars |
