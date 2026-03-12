@@ -219,9 +219,11 @@ The primary skill for invoking Gemini models for coding, reasoning, and research
 - **Skill Path**: `skills/gemini/SKILL.md`
 - **Triggers**: "use gemini", "ask gemini", "gemini cli", "Google AI"
 
-### Nano Banana (Image Generation)
+### Nano Banana (Image Generation — CLI Mode)
 
 Generate and edit images using the Nano Banana extension for Gemini CLI. Handles illustrations, icons, diagrams, patterns, thumbnails, and visual assets.
+
+> **Note**: A standalone [nanobanana plugin](../nanobanana/README.md) is also available that runs the MCP server directly without requiring Gemini CLI. Use this CLI-based skill if you already have Gemini CLI installed; otherwise prefer the standalone plugin.
 
 - **Skill Path**: `skills/nanobanana/SKILL.md`
 - **Triggers**: Any image generation request (create, generate, draw, design, edit images)
