@@ -99,7 +99,7 @@ For full parameter reference for all 7 tools, see `references/commands.md`.
 
 ## Defaults
 
-- **outputCount**: Always use 3 unless user specifies otherwise
+- **outputCount**: For `generate_image`, always use 3 unless user specifies otherwise. Other tools have their own count semantics (e.g., `generate_icon` uses `sizes`, `generate_story` uses `steps`).
 - **Model**: `gemini-3.1-flash-image-preview` (override via `NANOBANANA_MODEL` env var)
 - **Output**: Images saved to `./nanobanana-output/` in current directory
 
@@ -129,4 +129,5 @@ When the user asks for changes:
 
 ---
 
+For image quality guidelines (style compliance, text accuracy, story consistency), see `references/generation-guidelines.md`.
 For error troubleshooting, see `references/troubleshooting.md`.
