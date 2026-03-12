@@ -1,6 +1,6 @@
 ---
 name: gemini
-version: 1.8.0
+version: 1.9.0
 description: This skill should be used when the user wants to invoke Google Gemini CLI for complex reasoning tasks, research, and AI assistance. Trigger phrases include "use gemini", "ask gemini", "run gemini", "call gemini", "gemini cli", "Google AI", "Gemini reasoning", or when users request Google's AI models, need advanced reasoning capabilities, research with web search, or want to continue previous Gemini conversations. Automatically triggers on Gemini-related requests and supports session continuation for iterative development.
 ---
 
@@ -487,7 +487,7 @@ For detailed information, consult these reference files:
 ## Tips & Best Practices
 
 1. **Always Specify Model**: Use `-m` flag explicitly for predictable behavior
-2. **Use Positional Prompts**: Prefer `gemini "prompt"` over deprecated `-p` flag
+2. **Use `-p` for Headless Mode**: Use `gemini -p "prompt"` for non-interactive execution in Claude Code
 3. **Enable Web Search When Needed**: Add `-e web_search` for research tasks
 4. **Resume Sessions for Complex Tasks**: Use `-r latest` for multi-turn conversations
 5. **Start with Gemini 3.1 Pro**: Default to `gemini-3.1-pro-preview`, fallback to 2.5 models

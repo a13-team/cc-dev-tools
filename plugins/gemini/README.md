@@ -153,7 +153,7 @@ gemini -m gemini-2.5-pro --output-format json "List design patterns"
 | Parameter | Default | Override |
 |-----------|---------|----------|
 | Model | `gemini-3.1-pro-preview` | `-m <model>` |
-| Approval Mode | `auto_edit` | `--approval-mode <mode>` |
+| Approval Mode | `default` | `--approval-mode <mode>` |
 | Sandbox | `false` | `-s` |
 | Output Format | `text` | `--output-format <format>` |
 | Extensions | All enabled | `-e <extensions>` |

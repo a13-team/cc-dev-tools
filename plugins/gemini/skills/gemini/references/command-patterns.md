@@ -319,9 +319,6 @@ gemini extensions update --all
 ## Anti-Patterns (Avoid These)
 
 ```bash
-# ❌ Using -p flag (deprecated)
-gemini -p "prompt"  # Will be removed in future
-
 # ❌ Using -i for headless mode
 gemini -i "prompt"  # This starts interactive mode, not one-shot
 
@@ -334,7 +331,7 @@ gemini -i "prompt"  # This starts interactive mode, not one-shot
 
 ## Best Practices
 
-1. **Prefer Positional Prompts**: Use `gemini "prompt"` instead of `gemini -p "prompt"`
+1. **Use `-p` for Headless Mode**: Use `gemini -p "prompt"` for non-interactive execution
 2. **Specify Model Explicitly**: Always use `-m` flag for predictable behavior
 3. **Use Appropriate Approval Mode**: Default for untrusted tasks, auto_edit for code editing
 4. **Enable Sandbox for Unknown Code**: Use `-s` when analyzing untrusted input
