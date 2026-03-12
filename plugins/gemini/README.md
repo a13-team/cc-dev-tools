@@ -14,10 +14,11 @@ This plugin enables Claude Code users to invoke Google's Gemini AI models for co
 - **Safe Defaults**: Auto-edit approval mode and disabled sandbox for trusted environments
 - **Extensions Support**: Built-in web search and MCP server integration
 - **Headless Execution**: Optimized for Claude Code's non-interactive bash environment
+- **Image Generation**: Nano Banana extension for generating images, icons, diagrams, and visual assets via Gemini
 
 ## Prerequisites
 
-1. **Gemini CLI** (v0.32.1 or later)
+1. **Gemini CLI** (v0.33.0 or later)
    ```bash
    npm install -g @google/gemini-cli@latest
    ```
@@ -209,19 +210,46 @@ Wait for reset or upgrade to paid tier
 gemini --list-sessions  # Check available sessions
 ```
 
+## Skills
+
+### Gemini (Reasoning & Research)
+
+The primary skill for invoking Gemini models for coding, reasoning, and research tasks.
+
+- **Skill Path**: `skills/gemini/SKILL.md`
+- **Triggers**: "use gemini", "ask gemini", "gemini cli", "Google AI"
+
+### Nano Banana (Image Generation)
+
+Generate and edit images using the Nano Banana extension for Gemini CLI. Handles illustrations, icons, diagrams, patterns, thumbnails, and visual assets.
+
+- **Skill Path**: `skills/nanobanana/SKILL.md`
+- **Triggers**: Any image generation request (create, generate, draw, design, edit images)
+- **Extension**: [nanobanana](https://github.com/gemini-cli-extensions/nanobanana)
+- **Default**: Generates 3 images per request
+- **Auth**: API key (default), Vertex AI, or auto-detect
+- **Commands**: `/generate`, `/icon`, `/diagram`, `/pattern`, `/story`, `/edit`, `/restore`, `/nanobanana`
+
+**Prerequisites:**
+```bash
+# Install nanobanana extension
+gemini extensions install https://github.com/gemini-cli-extensions/nanobanana
+
+# Set API key (or configure Vertex AI)
+export GEMINI_API_KEY=your_key
+```
+
 ## Documentation
 
-- **SKILL.md**: Complete skill definition and usage guide
-- **references/gemini-help.md**: Full CLI reference
-- **references/command-patterns.md**: Common command templates
-- **references/session-workflows.md**: Multi-turn conversation patterns
-- **references/model-selection.md**: Model selection decision tree
+- **skills/gemini/SKILL.md**: Gemini reasoning skill definition
+- **skills/gemini/references/**: CLI reference, command patterns, session workflows, model selection
+- **skills/nanobanana/SKILL.md**: Image generation skill definition
 
 ## Version Compatibility
 
-- **Minimum**: Gemini CLI v0.32.1
+- **Minimum**: Gemini CLI v0.33.0
 - **Recommended**: Latest stable version
-- **Breaking Changes**: `-p` flag deprecated (use positional prompts)
+- **Note**: `-p` flag is the headless (non-interactive) mode flag
 
 ## When to Use Gemini vs Codex vs Claude
 
@@ -244,7 +272,7 @@ gemini --list-sessions  # Check available sessions
 This plugin follows the cc-dev-tools marketplace structure:
 - Plugin root: `plugins/gemini/`
 - Metadata: `.claude-plugin/plugin.json`
-- Skill definition: `skills/gemini/SKILL.md`
+- Skills: `skills/gemini/SKILL.md`, `skills/nanobanana/SKILL.md`
 - References: `skills/gemini/references/`
 
 ## License
@@ -253,7 +281,7 @@ Apache-2.0
 
 ## Version
 
-1.7.0
+1.9.0
 
 ## Author
 

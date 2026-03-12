@@ -17,10 +17,10 @@ This plugin enables Claude Code users to invoke OpenAI's Codex CLI with GPT-5.4 
 
 ## Prerequisites
 
-1. **Codex CLI** (v0.111.0 or later)
+1. **Codex CLI** (v0.114.0 or later)
    ```bash
    # Install Codex CLI (follow OpenAI's installation instructions)
-   codex --version  # Should show v0.111.0+
+   codex --version  # Should show v0.114.0+
    ```
 
 2. **Authentication**
@@ -199,7 +199,7 @@ If you encounter rate limits, check your OpenAI API usage dashboard. The plugin 
 
 ## Version Compatibility
 
-- **Minimum**: Codex CLI v0.111.0
+- **Minimum**: Codex CLI v0.114.0
 - **Recommended**: Latest stable version
 - **Models**: GPT-5.4 (default), GPT-5.4-Fast (on demand)
 
@@ -251,4 +251,4 @@ https://github.com/Lucklyric/cc-dev-tools
 
 ## Version
 
-2.6.0
+2.7.0

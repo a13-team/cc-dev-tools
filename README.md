@@ -28,7 +28,7 @@ Frontier AI assistant through OpenAI Codex CLI (GPT-5.4) integration.
 
 **Quick Start:**
 ```bash
-codex --version  # Requires v0.111.0+
+codex --version  # Requires v0.114.0+
 codex login
 ```
 
@@ -40,7 +40,7 @@ codex login
 | Info | Value |
 |------|-------|
 | Path | [`plugins/codex/`](plugins/codex/) |
-| Version | 2.6.0 |
+| Version | 2.7.0 |
 | Models | GPT-5.4, GPT-5.4-Fast |
 
 **Full Documentation**: [Codex Plugin README](plugins/codex/README.md)
@@ -49,17 +49,18 @@ codex login
 
 ### Gemini Plugin
 
-Google Gemini 3.1 Pro AI integration through Gemini CLI for research, reasoning, and web search.
+Google Gemini 3.1 Pro AI integration through Gemini CLI for research, reasoning, web search, and image generation.
 
 **Core Features:**
 - **Gemini 3.1 Pro Default**: Uses `gemini-3.1-pro-preview` for ALL tasks (highest capability)
 - **Version-Based Mapping**: User requests like "use 3" automatically map to the latest 3.x model
 - **Session Continuation**: Resume previous conversations with `-r latest`
 - **Web Search Integration**: Built-in web search for research and documentation lookup
+- **Image Generation**: Nano Banana extension for generating images, icons, diagrams, and visual assets
 
 **Quick Start:**
 ```bash
-npm install -g @google/gemini-cli@latest  # Requires v0.29.5+
+npm install -g @google/gemini-cli@latest  # Requires v0.33.0+
 gemini login
 ```
 
@@ -71,7 +72,8 @@ gemini login
 | Info | Value |
 |------|-------|
 | Path | [`plugins/gemini/`](plugins/gemini/) |
-| Version | 1.7.0 |
+| Version | 1.9.0 |
+| Skills | Gemini (reasoning), Nano Banana (image generation) |
 | Models | Gemini 3.1 Pro, 3 Pro, 2.5 Pro/Flash |
 
 **Full Documentation**: [Gemini Plugin README](plugins/gemini/README.md)
@@ -110,7 +112,7 @@ export CC_TELEGRAM_CHAT_ID="your-chat-id"
 | Info | Value |
 |------|-------|
 | Path | [`plugins/telegram-notifier/`](plugins/telegram-notifier/) |
-| Version | 0.1.0 |
+| Version | 0.3.0 |
 | Type | Hooks only (no skills or agents) |
 
 **Full Documentation**: [Telegram Notifier README](plugins/telegram-notifier/README.md)
@@ -159,9 +161,12 @@ cc-dev-tools/                          # Marketplace root
     │   ├── .claude-plugin/
     │   │   └── plugin.json
     │   ├── README.md
-    │   └── skills/gemini/
-    │       ├── SKILL.md
-    │       └── references/
+    │   └── skills/
+    │       ├── gemini/                # Reasoning & research skill
+    │       │   ├── SKILL.md
+    │       │   └── references/
+    │       └── nanobanana/            # Image generation skill
+    │           └── SKILL.md
     │
     └── telegram-notifier/             # Telegram notifications
         ├── .claude-plugin/
@@ -202,13 +207,13 @@ Apache 2.0
 
 ## Version
 
-**Marketplace**: 2.8.0
+**Marketplace**: 2.12.0
 
 | Plugin | Version |
 |--------|---------|
-| Codex | 2.6.0 |
-| Gemini | 1.7.0 |
-| Telegram Notifier | 0.2.1 |
+| Codex | 2.7.0 |
+| Gemini | 1.9.0 |
+| Telegram Notifier | 0.3.0 |
 
 ## Links
 
