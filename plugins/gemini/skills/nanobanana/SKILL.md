@@ -67,6 +67,8 @@ gemini --yolo -p "/command 'description' --flags"
 
 **Why both flags?** `--yolo` auto-approves tool actions. `-p` forces non-interactive (headless) mode. Both are required in Claude Code's non-terminal environment.
 
+**CLI mode only** — this skill uses nanobanana exclusively through Gemini CLI extension commands. Do NOT use the nanobanana MCP server directly (it has known bytestring encoding issues). Always invoke via `gemini --yolo -p "/command ..."`.
+
 **Skill default: `--count=3`** — always generate 3 images unless user specifies otherwise.
 
 ---

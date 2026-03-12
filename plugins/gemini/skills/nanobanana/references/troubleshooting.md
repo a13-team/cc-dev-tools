@@ -32,3 +32,4 @@ export GCP_REGION=us-central1
 | Model unavailable | Invalid model ID | Check `NANOBANANA_MODEL` value |
 | Generation failed | Prompt safety filter | Rephrase the prompt |
 | Quota exceeded | Rate limit hit | Wait for reset or switch to flash model |
+| MCP bytestring encoding errors | Known bug in nanobanana MCP server | Do not use MCP mode. Use CLI mode only: `gemini --yolo -p "/command ..."` |
