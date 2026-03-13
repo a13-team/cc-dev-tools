@@ -72,7 +72,7 @@ gemini login
 | Info | Value |
 |------|-------|
 | Path | [`plugins/gemini/`](plugins/gemini/) |
-| Version | 1.9.0 |
+| Version | 2.0.0 |
 | Skills | Gemini (reasoning) |
 | Models | Gemini 3.1 Pro, 3 Pro, 2.5 Pro/Flash |
 
@@ -249,12 +249,12 @@ Apache 2.0
 
 ## Version
 
-**Marketplace**: 2.16.0
+**Marketplace**: 2.17.0
 
 | Plugin | Version |
 |--------|---------|
 | Codex | 2.7.0 |
-| Gemini | 1.9.0 |
+| Gemini | 2.0.0 |
 | Nano Banana | 1.4.0 |
 | Telegram Notifier | 0.3.0 |
 
